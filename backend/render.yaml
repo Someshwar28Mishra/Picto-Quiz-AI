@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: picto-quiz-ai
+    runtime: python
+    buildCommand: |
+      # Install Rust for building python-bidi
+      curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      export PATH="$HOME/.cargo/bin:$PATH"
+      # Install Python dependencies
+      pip install --upgrade pip
+      pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0  # Use Python 3.11 instead of 3.14 for better compatibility
